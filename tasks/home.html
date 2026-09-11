@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task Manager</title>
+</head>
+
+<body>
+
+<h1>Task Manager</h1>
+
+
+<h2>Add Task</h2>
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit">Add Task</button>
+
+</form>
+
+
+<hr>
+
+
+<h2>Search Tasks</h2>
+
+<form method="GET">
+
+    <input
+        type="text"
+        name="search"
+        placeholder="Search task"
+        value="{{ search }}"
+    >
+
+    <button type="submit">Search</button>
+
+</form>
+
+
+<hr>
+
+
+<h2>All Tasks</h2>
+
+
+{% for task in tasks %}
+
+    <h3>{{ task.title }}</h3>
+
+    <p>{{ task.description }}</p>
+
+    {% if task.completed %}
+        <p>Status: Completed</p>
+    {% else %}
+        <p>Status: Pending</p>
+    {% endif %}
+
+    <a href="{% url 'toggle' task.id %}">
+        Toggle
+    </a>
+
+    <a href="{% url 'delete' task.id %}">
+        Delete
+    </a>
+
+    <hr>
+
+{% empty %}
+
+    <p>No tasks found.</p>
+
+{% endfor %}
+
+</body>
+</html>
